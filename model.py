@@ -67,8 +67,17 @@ def make_quotes(fair_value, spread_width):
         'ask': fair_value + (spread_width / 2.0)
     }
 
-# Step 6 - execute_trade (not yet solved)
-# TODO: implement
+# Step 6 - execute_trade
+def execute_trade(state, side, bid, ask, size=1):
+    # TODO: apply a counterparty trade against your bid/ask and return updated state
+    dup = state.copy()
+    if side == 'buy':
+        dup['cash'] += ask * size
+        dup['inventory'] -= size
+    else:
+        dup['cash'] -= bid * size
+        dup['inventory'] += size
+    return dup
 
 # Step 7 - mark_to_market_pnl (not yet solved)
 # TODO: implement
