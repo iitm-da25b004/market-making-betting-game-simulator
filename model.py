@@ -39,8 +39,25 @@ def pay_per_reroll_die_game(sides, reroll_cost):
     min_ev, min_thresh = max([(ev_1, thresh_1), (ev_2, thresh_2)], key=lambda x: (x[0], -x[1]))
     return {'threshold': min_thresh, 'value': float(min_ev)}
 
-# Step 4 - red_black_card_game_value (not yet solved)
-# TODO: implement
+# Step 4 - red_black_card_game_value
+from functools import lru_cache
+def red_black_card_game_value(num_red, num_black):
+    # TODO: return {'value': expected payout under optimal stopping, 'stop_now': whether to stop immediately}.
+    total = num_black + num_red
+    if num_red < num_black or (total == 0):
+        return {'value': 0.0, 'stop_now': True}
+    @lru_cache(None)
+    def rec(r, b):
+        if r == 0:
+            return 0.0
+        if b == 0:
+            return float(r)
+        if r == 1 and b == 1:
+            return 0.5
+        total = (r + b)
+        return max(0.0, (r / total) * (1 + rec(r-1, b)) + (b / total) * (-1 +rec(r, b-1)))
+    val = rec(num_red, num_black)
+    return {'value': val, 'stop_now': False}
 
 # Step 5 - make_quotes (not yet solved)
 # TODO: implement
